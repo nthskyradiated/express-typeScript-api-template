@@ -2,21 +2,22 @@ import { ObjectId } from "mongodb"
 import {  Model, ModelWithId, Models } from "../models/Model"
 import { Response, Request, NextFunction } from "express"
 import { NoResult, ParamsWithId } from "../interface"
+import client from "prom-client"
 
 
 
 export const findAll = async (req: Request, res: Response<ModelWithId[] | NoResult>, next: NextFunction) => {
-    try {
-        const result = await Models.find().toArray()
-        if (!result) {
-            res.status(404).json({
-                message: "notFound"
-            })
-        }
-        res.json(result)
-
-    } catch (error) {
-        next(error)
+  try {
+    const result = await Models.find().toArray()
+    if (!result) {
+      res.status(404).json({
+        message: "notFound"
+      })
+    }
+    res.json(result)
+    
+  } catch (error) {
+    next(error)
     }
 }
 export async function findOne(req: Request<ParamsWithId, ModelWithId, {}>, res: Response<ModelWithId>, next: NextFunction) {
@@ -80,4 +81,22 @@ export const deleteOne = async (req: Request<ParamsWithId, {}, {}>, res: Respons
     } catch (error) {
       next(error);
     } 
+  }
+
+  const register = new client.Registry()
+  client.collectDefaultMetrics({
+    prefix: 'node_',
+    gcDurationBuckets: [0.001, 0.01, 0.1, 1, 2, 5],
+    register })
+  
+  
+    export const getMetrics = async (req: Request, res: Response, next: NextFunction) => {
+        await register
+        .getMetricsAsJSON()
+        .then((metrics) => {
+          res.setHeader('Content-Type', register.contentType)
+          res.status(200).send(metrics)
+        }).catch((err) => {
+          next(err)
+        })
   }

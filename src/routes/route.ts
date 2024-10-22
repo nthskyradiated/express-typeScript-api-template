@@ -10,6 +10,4 @@ router.post('/', handler.create)
 router.patch('/:id', handler.update)
 
 router.delete('/:id',handler.deleteOne);
-  
-
 export default router

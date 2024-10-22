@@ -6,6 +6,7 @@ import { MessageResponse } from './interface'
 import routes from './routes/route'
 import dotenv from 'dotenv'
 import { errorHandler, notFound } from './middlewares/middlewares'
+import { getMetrics } from './routes/handlers'
 dotenv.config({ path: `${__dirname}/../.env` })
 
 
@@ -28,7 +29,7 @@ app.get<{}, MessageResponse>('/', (req , res: Response) => {
     }).end()
 })
 app.use(`${apiDirPath}`, routes)
-
+app.use('/metrics', getMetrics)
 
 app.use(notFound);
 app.use(errorHandler);
