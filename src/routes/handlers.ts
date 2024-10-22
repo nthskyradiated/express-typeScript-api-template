@@ -84,15 +84,30 @@ export const deleteOne = async (req: Request<ParamsWithId, {}, {}>, res: Respons
   }
 
   const register = new client.Registry()
-  client.collectDefaultMetrics({
-    prefix: 'node_',
-    gcDurationBuckets: [0.001, 0.01, 0.1, 1, 2, 5],
-    register })
-  
+// Create a counter metric
+const httpRequestsTotal = new client.Counter({
+  name: 'http_requests_total',
+  help: 'Total number of HTTP requests',
+  labelNames: ['method', 'status'],
+});
+
+const collectDefaultMetrics = client.collectDefaultMetrics
+collectDefaultMetrics({
+  register,
+  prefix: 'express_',
+})
+
+// Register the counter with the registry
+register.registerMetric(httpRequestsTotal);
+
+// Set default labels
+register.setDefaultLabels({
+  app: 'express-ts-api',
+});
+
   
     export const getMetrics = async (req: Request, res: Response, next: NextFunction) => {
-        await register
-        .getMetricsAsJSON()
+        await register.metrics()
         .then((metrics) => {
           res.setHeader('Content-Type', register.contentType)
           res.status(200).send(metrics)
