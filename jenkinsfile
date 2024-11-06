@@ -5,9 +5,9 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Preparing... Building..'
-                ls -al
-                cd src
-                npm install
+                sh 'ls -al'
+                sh 'cd src'
+                sh 'npm install'
             }
         }
         stage('Test') {
