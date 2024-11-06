@@ -6,7 +6,7 @@ pipeline {
             steps {
                 echo 'Building environment..'
 
-            withNPM(npmrcConfig:'MyNpmrcConfig') {
+            withNPM(npmrcConfig: 'my-custom-npmrc') {
             echo "Performing npm build..."
             sh 'npm install'
         }
