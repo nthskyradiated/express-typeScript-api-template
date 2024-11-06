@@ -1,28 +1,26 @@
 pipeline {
     agent any
     environment {
-
+        // Add the location of globally installed pnpm to the PATH
         PATH = "/usr/local/bin:$PATH"
     }
     stages {
-
-
-        stage('Build') {
-                            steps {
+        stage('Build and Test') {
+            steps {
                 nodejs(nodeJSInstallationName: 'NodeJS') {
+                    // Install pnpm globally, clean cache, and install dependencies
                     sh 'npm install -g pnpm'
                     sh 'npm cache clean --force'
                     sh 'pnpm install --store=node_modules/.pnpm-store'
                 }
-            }
-        }
-        stage('Test') {
-            steps {
-dir('src') {
+
+                // Run tests in the 'src' directory
+                dir('src') {
                     sh 'pnpm run test'
                 }
             }
         }
+
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
