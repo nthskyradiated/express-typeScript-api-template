@@ -37,7 +37,7 @@ export async function findOne(req: Request<ParamsWithId, ModelWithId, {}>, res: 
 export const create = async (req: Request, res: Response<NoResult>, next: NextFunction) => {
     try {
         const insertResult = await Models.insertOne(req.body)
-        if (!insertResult.acknowledged) throw new Error('Error inserting budget.');
+        if (!insertResult.acknowledged) throw new Error('Error inserting model.');
         res.status(201);
         res.json({
           _id: insertResult.insertedId,

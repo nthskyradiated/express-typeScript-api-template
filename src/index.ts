@@ -12,7 +12,7 @@ dotenv.config({ path: `${__dirname}/../.env` })
 
 const app = express()
 const port = process.env.PORT
-const apiDirPath = process.env.API_DIR_PATH
+export const apiDirPath = process.env.API_DIR_PATH
 
 app.listen(port, () => {
     console.log(`listening on port ${port}`)

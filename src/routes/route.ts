@@ -1,13 +1,32 @@
 import { Router } from "express";
-import * as handler from './handlers'
+import * as handler from "./handlers";
+import { Model } from "../models/Model";
+import { ParamsWithId } from "../interface";
+import { validateRequest } from "../middlewares/middlewares";
 
-const router = Router()
+const router = Router();
 
-router.get('/', handler.findAll)
-router.get('/:id', handler.findOne)
+router.get("/", handler.findAll);
+router.get(
+  "/:id",
+  validateRequest({
+    params: ParamsWithId,
+  }),
+  handler.findOne
+);
 
-router.post('/', handler.create)
-router.patch('/:id', handler.update)
+router.post("/", validateRequest({
+    body: Model,
+  }),handler.create);
+router.put("/:id", validateRequest({
+    params: ParamsWithId,
+    body: Model,
+  }),
+  handler.update);
 
-router.delete('/:id',handler.deleteOne);
-export default router
+router.delete("/:id", validateRequest({
+    params: ParamsWithId,
+  }),
+  handler.deleteOne);
+
+  export default router;
