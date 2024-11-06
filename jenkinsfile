@@ -19,7 +19,7 @@ script {
                     export FNM_DIR="$HOME/.local/share/fnm"
                     export PATH="$FNM_DIR:$PATH"
                     fnm install 18  # Install Node.js
-                    fnm use 18  # Set Node.js version
+                    fnm default 18  # Set Node.js version
                     '''
 
                     // Verify Node.js and npm installation
