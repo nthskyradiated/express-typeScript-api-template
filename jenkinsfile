@@ -3,41 +3,10 @@ pipeline {
 
     stages {
         stage('Build') {
-            steps {
-                echo 'Building environment..'
 
-script {
-                    // Set FNM_DIR and install fnm
-                    sh '''
-                    export FNM_DIR="$HOME/.local/share/fnm"
-                    curl -fsSL https://fnm.vercel.app/install | bash
-                    export PATH="$FNM_DIR:$PATH"
-                    eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"
-                    '''
-
-                    // Install Node.js version 18
-                    sh '''
-                    export FNM_DIR="$HOME/.local/share/fnm"
-                    export PATH="$FNM_DIR:$PATH"
-                    fnm install 22
-                    '''
-
-                    // Explicitly use Node.js 18 for verification and npm install
-                    sh '''
-                    export FNM_DIR="$HOME/.local/share/fnm"
-                    export PATH="$FNM_DIR:$PATH"
-                    fnm use 22
-                    node -v     # Check Node.js version
-                    npm -v      # Check npm version
-                    '''
-
-                    // Install dependencies with explicit Node.js version 18
-                    sh '''
-                    export FNM_DIR="$HOME/.local/share/fnm"
-                    export PATH="$FNM_DIR:$PATH"
-                    fnm use 18  # Explicitly set Node.js version 18
-                    npm install
-                    '''
+                            steps {
+                nodejs(nodeJSInstallationName: 'Node 23.x', configId: '36798171-7e66-492c-a7bc-2a9efafe585c') {
+                    sh 'npm config ls'
                 }
             }
         }
