@@ -1,36 +1,28 @@
 pipeline {
     agent any
+    environment {
 
+        PATH = "/usr/local/bin:$PATH"
+    }
     stages {
-        
-        stage('Setup') {
-            steps {
+
+
+        stage('Build') {
+                            steps {
                 nodejs(nodeJSInstallationName: 'NodeJS') {
-                    // Install pnpm once globally and setup initial dependencies
                     sh 'npm install -g pnpm'
+                    sh 'npm cache clean --force'
                     sh 'pnpm install --store=node_modules/.pnpm-store'
                 }
             }
         }
-
-        stage('Build') {
-            steps {
-                // No need to reinstall pnpm; just use pnpm to run build commands if needed
-                dir('src') {
-                    sh 'pnpm run build'
-                }
-            }
-        }
-
         stage('Test') {
             steps {
-                // Reuse pnpm and cached node_modules from Setup
-                dir('src') {
+dir('src') {
                     sh 'pnpm run test'
                 }
             }
         }
-
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
