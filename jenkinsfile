@@ -5,12 +5,11 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building environment..'
- script {
-                    // Install fnm and update PATH
+                script {
+                    // Install fnm and set PATH directly
                     sh '''
                     curl -fsSL https://fnm.vercel.app/install | bash
                     export PATH="$HOME/.fnm:$PATH"
-                    source ~/.bashrc  # Source the profile to apply changes
                     eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"
                     '''
 
