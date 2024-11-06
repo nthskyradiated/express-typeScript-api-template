@@ -1,5 +1,5 @@
 {
-  "name": "budget-tracker",
+  "name": "express-typescript-api-template",
   "version": "1.0.0",
   "description": "Express API template with mongodb",
   "main": "src/index.ts",
