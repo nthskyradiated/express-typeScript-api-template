@@ -9,8 +9,8 @@ pipeline {
                     // Install fnm (Fast Node Manager) using curl
                     sh 'curl -fsSL https://fnm.vercel.app/install | bash'
 
-                    // Add fnm to the PATH for the current session
-                    sh 'export PATH="$HOME/.fnm:$PATH"'
+                    export 'PATH=/home/$USER/.fnm:$PATH'
+                    eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"
 
                     // Install the desired version of Node.js (e.g., 18)
                     sh 'fnm install 18'
