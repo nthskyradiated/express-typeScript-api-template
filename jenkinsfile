@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
 
                             steps {
-                nodejs(nodeJSInstallationName: 'Node 23.x', configId: '36798171-7e66-492c-a7bc-2a9efafe585c') {
+                nodejs(nodeJSInstallationName: 'Node 23.x') {
                     sh 'npm config ls'
                 }
             }
