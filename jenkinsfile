@@ -5,37 +5,11 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building environment..'
-script {
-                    // Set FNM_DIR to define installation path and export PATH
-                    sh '''
-                    export FNM_DIR="$HOME/.local/share/fnm"  # Explicitly set fnm installation directory
-                    curl -fsSL https://fnm.vercel.app/install | bash  # Install fnm
-                    export PATH="$FNM_DIR:$PATH"  # Add fnm to PATH
-                    eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"  # Initialize fnm environment
-                    '''
 
-                    // Install Node.js version 18
-                    sh '''
-                    export FNM_DIR="$HOME/.local/share/fnm"
-                    export PATH="$FNM_DIR:$PATH"
-                    fnm install 22
-                    '''
-
-                    // Verify Node.js and npm installation
-                    sh '''
-                    export FNM_DIR="$HOME/.local/share/fnm"
-                    export PATH="$FNM_DIR:$PATH"
-                    node -v  # Check Node.js version
-                    npm -v   # Check npm version
-                    '''
-
-                    // Install dependencies
-                    sh '''
-                    export FNM_DIR="$HOME/.local/share/fnm"
-                    export PATH="$FNM_DIR:$PATH"
-                    npm install
-                    '''
-                }
+            withNPM(npmrcConfig:'my-npmrc') {
+            echo "Performing npm build..."
+            sh 'npm install'
+        }
             }
         }
         stage('Test') {
