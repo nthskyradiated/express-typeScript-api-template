@@ -7,23 +7,31 @@ pipeline {
                 echo 'Building environment..'
                 script {
                     // Install fnm (Fast Node Manager) using curl
-                    sh 'curl -fsSL https://fnm.vercel.app/install | bash'
-
-                    export 'PATH=/home/$USER/.fnm:$PATH'
-                    sh 'eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"'
+                    sh '''
+                    curl -fsSL https://fnm.vercel.app/install | bash
+                    export PATH="$HOME/.fnm:$PATH"  // Update PATH for current session
+                    eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"
+                    '''
 
                     // Install the desired version of Node.js (e.g., 18)
-                    sh 'fnm install 18'
-
-                    // Set the installed version of Node.js
-                    sh 'fnm use 18'
+                    sh '''
+                    export PATH="$HOME/.fnm:$PATH"  // Ensure PATH is updated
+                    fnm install 18
+                    fnm use 18
+                    '''
 
                     // Verify installation of Node.js and npm
-                    sh 'node -v'
-                    sh 'npm -v'
+                    sh '''
+                    export PATH="$HOME/.fnm:$PATH"  // Ensure PATH is updated
+                    node -v
+                    npm -v
+                    '''
 
                     // Install dependencies using npm
-                    sh 'npm install'
+                    sh '''
+                    export PATH="$HOME/.fnm:$PATH"  // Ensure PATH is updated
+                    npm install
+                    '''
                 }
             }
         }
