@@ -5,31 +5,35 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building environment..'
-                script {
-                    // Install fnm and set PATH directly
+script {
+                    // Set FNM_DIR to define installation path and export PATH
                     sh '''
-                    curl -fsSL https://fnm.vercel.app/install | bash
-                    export PATH="$HOME/.fnm:$PATH"
-                    eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"
+                    export FNM_DIR="$HOME/.local/share/fnm"  # Explicitly set fnm installation directory
+                    curl -fsSL https://fnm.vercel.app/install | bash  # Install fnm
+                    export PATH="$FNM_DIR:$PATH"  # Add fnm to PATH
+                    eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"  # Initialize fnm environment
                     '''
 
-                    // Install Node.js version 18 and set it for the session
+                    // Install Node.js version 18
                     sh '''
-                    export PATH="$HOME/.fnm:$PATH"
-                    fnm install 18
-                    fnm use 18
+                    export FNM_DIR="$HOME/.local/share/fnm"
+                    export PATH="$FNM_DIR:$PATH"
+                    fnm install 18  # Install Node.js
+                    fnm use 18  # Set Node.js version
                     '''
 
                     // Verify Node.js and npm installation
                     sh '''
-                    export PATH="$HOME/.fnm:$PATH"
-                    node -v
-                    npm -v
+                    export FNM_DIR="$HOME/.local/share/fnm"
+                    export PATH="$FNM_DIR:$PATH"
+                    node -v  # Check Node.js version
+                    npm -v   # Check npm version
                     '''
 
                     // Install dependencies
                     sh '''
-                    export PATH="$HOME/.fnm:$PATH"
+                    export FNM_DIR="$HOME/.local/share/fnm"
+                    export PATH="$FNM_DIR:$PATH"
                     npm install
                     '''
                 }
