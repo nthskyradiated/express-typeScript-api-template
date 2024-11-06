@@ -5,29 +5,30 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building environment..'
-                script {
-                    // Install fnm (Fast Node Manager) using curl
+ script {
+                    // Install fnm and update PATH
                     sh '''
                     curl -fsSL https://fnm.vercel.app/install | bash
                     export PATH="$HOME/.fnm:$PATH"
+                    source ~/.bashrc  # Source the profile to apply changes
                     eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"
                     '''
 
-                    // Install the desired version of Node.js (e.g., 18)
+                    // Install Node.js version 18 and set it for the session
                     sh '''
-                    export PATH="$HOME/.fnm:$PATH" 
+                    export PATH="$HOME/.fnm:$PATH"
                     fnm install 18
                     fnm use 18
                     '''
 
-                    // Verify installation of Node.js and npm
+                    // Verify Node.js and npm installation
                     sh '''
                     export PATH="$HOME/.fnm:$PATH"
                     node -v
                     npm -v
                     '''
 
-                    // Install dependencies using npm
+                    // Install dependencies
                     sh '''
                     export PATH="$HOME/.fnm:$PATH"
                     npm install
