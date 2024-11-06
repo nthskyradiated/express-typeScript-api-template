@@ -4,10 +4,27 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Preparing... Building..'
-                sh 'ls -al'
-                sh 'cd src'
-                sh 'npm install'
+                echo 'Building environment..'
+                script {
+                    // Install fnm (Fast Node Manager) using curl
+                    sh 'curl -fsSL https://fnm.vercel.app/install | bash'
+
+                    // Add fnm to the PATH for the current session
+                    sh 'export PATH="$HOME/.fnm:$PATH"'
+
+                    // Install the desired version of Node.js (e.g., 18)
+                    sh 'fnm install 18'
+
+                    // Set the installed version of Node.js
+                    sh 'fnm use 18'
+
+                    // Verify installation of Node.js and npm
+                    sh 'node -v'
+                    sh 'npm -v'
+
+                    // Install dependencies using npm
+                    sh 'npm install'
+                }
             }
         }
         stage('Test') {
