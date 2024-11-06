@@ -3,9 +3,9 @@ pipeline {
 
     stages {
         stage('Build') {
-
                             steps {
                 nodejs(nodeJSInstallationName: 'NodeJS') {
+                    sh 'npm cache clean --force'
                     sh 'npm install'
                 }
             }
