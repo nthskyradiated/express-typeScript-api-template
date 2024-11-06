@@ -5,14 +5,15 @@ pipeline {
         stage('Build') {
                             steps {
                 nodejs(nodeJSInstallationName: 'NodeJS') {
+                    sh 'npm install -g pnpm'
                     sh 'npm cache clean --force'
-                    sh 'npm install'
+                    sh 'pnpm install'
                 }
             }
         }
         stage('Test') {
             steps {
-                sh 'npm run test'
+                sh 'pnpm run test'
             }
         }
         stage('Deploy') {
