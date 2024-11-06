@@ -10,7 +10,7 @@ pipeline {
                     sh 'curl -fsSL https://fnm.vercel.app/install | bash'
 
                     export 'PATH=/home/$USER/.fnm:$PATH'
-                    eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"
+                    sh 'eval "$(fnm env --use-on-cd --version-file-strategy=recursive)"'
 
                     // Install the desired version of Node.js (e.g., 18)
                     sh 'fnm install 18'
