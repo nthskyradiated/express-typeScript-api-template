@@ -12,10 +12,7 @@ pipeline {
                     sh 'npm install -g pnpm'
                     sh 'npm cache clean --force'
                     sh 'pnpm install --store=node_modules/.pnpm-store'
-                }
-
-                // Run tests in the 'src' directory
-                dir('src') {
+                    sh 'cd src'
                     sh 'pnpm run test'
                 }
             }
