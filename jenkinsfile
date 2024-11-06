@@ -18,7 +18,7 @@ script {
                     sh '''
                     export FNM_DIR="$HOME/.local/share/fnm"
                     export PATH="$FNM_DIR:$PATH"
-                    fnm use --install-if-missing 22
+                    fnm install 22
                     '''
 
                     // Verify Node.js and npm installation
