@@ -27,6 +27,7 @@ pipeline {
                 sh 'docker build -t nthskyradiated/express-typescript-api-template:v${BUILD_NUMBER} .'
                 sh 'docker push nthskyradiated/express-typescript-api-template:v${BUILD_NUMBER}'
             }
+            }
         }
     }
 }
