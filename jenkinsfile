@@ -7,12 +7,12 @@ pipeline {
     stages {
         stage('Build and Test') {
             steps {
+                echo 'building and testing...'
                 nodejs(nodeJSInstallationName: 'NodeJS') {
                     // Install pnpm globally, clean cache, and install dependencies
                     sh 'npm install -g pnpm'
                     sh 'npm cache clean --force'
                     sh 'pnpm install --store=node_modules/.pnpm-store'
-                    sh 'cd src'
                     sh 'pnpm run test'
                 }
             }
@@ -21,6 +21,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
+                sh 'docker login -u "${USERNAME}" -p "${PASSWORD}" https://index.docker.io/v1/'
+                sh 'docker build -t nthskyradiated/express-typescript-api-template:v${BUILD_NUMBER} .'
+                sh 'docker push nthskyradiated/express-typescript-api-template:v${BUILD_NUMBER}'
             }
         }
     }
