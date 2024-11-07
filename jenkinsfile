@@ -24,7 +24,7 @@
                     echo 'Deploying....'
                     withCredentials([usernamePassword(credentialsId: 'myDockerID', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh 'curl -fsSL https://get.docker.com -o get-docker.sh'
-                    sh 'sudo get-docker.sh'
+                    sh 'sudo sh get-docker.sh'
                     sh 'docker login -u "${USERNAME}" -p "${PASSWORD}" https://index.docker.io/v1/'
                     sh 'docker build -t nthskyradiated/express-typescript-api-template:v${BUILD_NUMBER} -f dockerfile .'
                     sh 'docker push nthskyradiated/express-typescript-api-template:v${BUILD_NUMBER}'
