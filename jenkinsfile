@@ -23,9 +23,9 @@ pipeline {
             steps {
                 echo 'Deploying....'
                 withCredentials([usernamePassword(credentialsId: 'myDockerID', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                sh 'docker -H tcp://192.168.1.106:2375 login -u "${USERNAME}" -p "${PASSWORD}" https://index.docker.io/v1/'
-                sh 'docker -H tcp://192.168.1.106:2375 build -t nthskyradiated/express-typescript-api-template:v${BUILD_NUMBER} .'
-                sh 'docker -H tcp://192.168.1.106:2375 push nthskyradiated/express-typescript-api-template:v${BUILD_NUMBER}'
+                sh 'docker -H tcp://localhost:2375 login -u "${USERNAME}" -p "${PASSWORD}" https://index.docker.io/v1/'
+                sh 'docker -H tcp://localhost:2375 build -t nthskyradiated/express-typescript-api-template:v${BUILD_NUMBER} .'
+                sh 'docker -H tcp://localhost:2375 push nthskyradiated/express-typescript-api-template:v${BUILD_NUMBER}'
             }
             }
         }
