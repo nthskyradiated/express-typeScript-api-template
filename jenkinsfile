@@ -3,6 +3,7 @@ pipeline {
     environment {
         // Add the location of globally installed pnpm to the PATH
         PATH = "/usr/local/bin:$PATH"
+
     }
     stages {
         stage('Build and Test') {
@@ -21,6 +22,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
+                withCredentials([usernamePassword(credentialsId: 'myDockerID', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                 sh 'docker login -u "${USERNAME}" -p "${PASSWORD}" https://index.docker.io/v1/'
                 sh 'docker build -t nthskyradiated/express-typescript-api-template:v${BUILD_NUMBER} .'
                 sh 'docker push nthskyradiated/express-typescript-api-template:v${BUILD_NUMBER}'
