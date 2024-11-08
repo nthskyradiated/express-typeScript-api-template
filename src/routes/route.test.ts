@@ -14,13 +14,13 @@ beforeEach(() => {
   app.use(errorHandler);
 });
 
-beforeAll(async () => {
-  try {
-    await Models.drop(); // Clean up the database before tests
-  } catch (error) {
-    console.error('Error cleaning database:', error);
-  }
-});
+// beforeAll(async () => {
+//   try {
+//     await Models.drop(); // Clean up the database before tests
+//   } catch (error) {
+//     console.error('Error cleaning database:', error);
+//   }
+// });
 
 // Test GET /api/routes
 describe('GET /api/routes', () => {
