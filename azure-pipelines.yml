@@ -10,7 +10,7 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- bash: echo $(NODE_ENV)
+- bash: echo $(MONGO_URI)
 - task: NodeTool@0
   inputs:
     versionSpec: '23.1'
