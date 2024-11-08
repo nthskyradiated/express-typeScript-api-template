@@ -15,6 +15,7 @@ steps:
     versionSpec: '23.1'
     checkLatest: true
 - script: |
+    echo "You can use macro syntax for variables: $(NODE_ENV)"
     npm install -g pnpm
     pnpm install
     pnpm run test
