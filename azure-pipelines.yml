@@ -1,27 +1,41 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - jenkins
 
 pool:
   vmImage: ubuntu-latest
 
+parameters:
+  - name: DockerID
+    type: string
+    default: $(DOCKER_USERNAME)
+  - name: DockerPassword
+    type: string
+    default: $(DOCKER_PASSWORD) 
+
 steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '23.1'
     checkLatest: true
+
 - script: |
     npm install -g pnpm
     pnpm install
     pnpm run test
   displayName: 'Set up npm and pnpm environment'
 
-- task: PublishTestResults@2
-  inputs:  
-    testResultsFormat: 'JUnit'
-    testResultsFiles: '**/TEST-*.xml'
-  displayName: 'npm install and build'
+# Docker build and push steps
+- task: Docker@2
+  inputs:
+    containerRegistry: 'docker-svc-connection' # Use a service connection for Docker Hub
+    repository: '$(DOCKER_USERNAME)/express-api-azure'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'  # Path to Dockerfile
+    tags: |
+      $(Build.BuildId)
+      latest
+
+# Logout
+- script: |
+    docker logout
+  displayName: 'Log out of Docker Hub'
