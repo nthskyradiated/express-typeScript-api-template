@@ -14,11 +14,6 @@ steps:
   inputs:
     versionSpec: '23.1'
     checkLatest: true
-  env:
-    PORT: 8080
-    MONGO_URI: "mongodb+srv://andypandaan:uEMVUbYqtLwgxeu5@exp-cluster-0.tc1gf.mongodb.net/?retryWrites=true&w=majority&appName=exp-cluster-0"
-    API_DIR_PATH: "/api/routes"
-    NODE_ENV: "dev"
 - script: |
     npm install -g pnpm
     pnpm install
