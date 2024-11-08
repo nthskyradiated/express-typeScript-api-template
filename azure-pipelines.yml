@@ -20,6 +20,7 @@ steps:
     API_DIR_PATH: /api/routes
 - script: |
     npm install -g pnpm
+    pnpm install
     pnpm run test
   displayName: 'Set up npm and pnpm environment'
 
