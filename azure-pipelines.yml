@@ -10,14 +10,21 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo installing pnpm
-  displayName: 'build and test stage'
-
+- task: NodeTool@0
+  inputs:
+    versionSpec: '23.1'
+    checkLatest: true
+  env:
+    PORT: 8080
+    MONGO_URI: mongodb+srv://andypandaan:uEMVUbYqtLwgxeu5@exp-cluster-0.tc1gf.mongodb.net/?retryWrites=true&w=majority&appName=exp-cluster-0
+    API_DIR_PATH: /api/routes
 - script: |
+    npm install -g pnpm
+    pnpm run test
+  displayName: 'Set up npm and pnpm environment'
 
-    curl -fsSL https://fnm.vercel.app/install | bash
-    source ~/.bashrc
-    fnm use --install-if-missing 23
-    node -v 
-    npm -v
-  displayName: 'Run a multi-line script'
+- task: PublishTestResults@2
+  inputs:  
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/TEST-*.xml'
+  displayName: 'npm install and build'
