@@ -17,12 +17,17 @@
             stage('Deploy') {
                 tools { dockerTool 'DockerInstall'}
                 steps {
-                    echo 'Deploying....'
+                    echo 'Deploying...'
                     withCredentials([usernamePassword(credentialsId: 'myDockerID', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh 'docker login -u "${USERNAME}" -p "${PASSWORD}" https://index.docker.io/v1/'
                     sh 'docker build -t nthskyradiated/express-typescript-api-template:v${BUILD_NUMBER} -f dockerfile .'
                     sh 'docker push nthskyradiated/express-typescript-api-template:v${BUILD_NUMBER}'
                 }
+                }
+            }
+            stage('Done') {
+                steps {
+                    echo 'Done'
                 }
             }
         }
