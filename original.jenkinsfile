@@ -21,8 +21,8 @@
                     sh 'curl -fsSL https://get.docker.com -o get-docker.sh'
                     sh 'sudo sh get-docker.sh'
                     sh 'docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}" https://index.docker.io/v1/'
-                    sh 'docker build -t ${DOCKER_USERNAME}/express-typescript-api-template:v${BUILD_NUMBER} -f dockerfile .'
-                    sh 'docker push ${DOCKER_USERNAME}/express-typescript-api-template:v${BUILD_NUMBER}'
+                    sh 'docker build -t ${DOCKER_USERNAME}/${GITHUB_REPO_NAME}:v${BUILD_NUMBER} -f dockerfile .'
+                    sh 'docker push ${DOCKER_USERNAME}/${GITHUB_REPO_NAME}:v${BUILD_NUMBER}'
                 }
                 }
             }
