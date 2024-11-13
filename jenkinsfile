@@ -15,7 +15,7 @@
                 }
             }   
 
-            stage('Deploy') {
+            stage('Push to DockerHub') {
                 tools { dockerTool 'DockerInstall'}
                 steps {
                     echo 'Deploying...'
@@ -27,6 +27,13 @@
                     sh 'docker rmi ${USERNAME}/${GITHUB_REPO_NAME}:v${BUILD_NUMBER}'
 
                 }
+                }
+            }
+
+            stage('Trigger Deployment') {
+                steps {
+                    echo 'triggering Argo-CD deployment...'
+                    build job: 'Argo-CD-Deployment', parameters: [string(name: 'VERSION', value: "${BUILD_NUMBER}")]
                 }
             }
             stage('Done') {
