@@ -1,6 +1,6 @@
     pipeline {
-        // agent { label 'jenkins-agent' }
-        agent any
+        agent { label 'jenkins-agent-local' }
+        // agent any
         stages {
             stage('Build and Test') {
                 steps {
