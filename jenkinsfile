@@ -1,6 +1,6 @@
     pipeline {
-        // agent { label 'jenkins-agent-local' }
-        agent any
+        agent { label 'jenkins-agent-local' }
+        // agent any
         stages {
             stage('Build and Test') {
                 steps {
@@ -21,10 +21,10 @@
                     echo 'Deploying...'
                     withCredentials([usernamePassword(credentialsId: 'myDockerID', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh 'docker login -u "${USERNAME}" -p "${PASSWORD}" https://index.docker.io/v1/'
-                    sh 'docker build -t ${USERNAME}/express-typescript-api-template:v${BUILD_NUMBER} -f dockerfile .'
-                    sh 'docker push ${USERNAME}/express-typescript-api-template:v${BUILD_NUMBER}'
+                    sh 'docker build -t ${USERNAME}/${GITHUB_REPO_NAME}:v${BUILD_NUMBER} -f dockerfile .'
+                    sh 'docker push ${USERNAME}/${GITHUB_REPO_NAME}:v${BUILD_NUMBER}'
                     echo 'Deployed! Proceeding to delete the built container...'
-                    sh 'docker rmi ${USERNAME}/express-typescript-api-template:v${BUILD_NUMBER}'
+                    sh 'docker rmi ${USERNAME}/${GITHUB_REPO_NAME}:v${BUILD_NUMBER}'
 
                 }
                 }
