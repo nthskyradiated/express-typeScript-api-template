@@ -14,7 +14,7 @@ describe('Express API', () => {
     app.use(express.json());
     app.get<{}, { message: string }>('/', (req, res) => {
       res.json({
-        message: 'API RootDir'
+        message: 'Blue: API RootDir'
       }).end();
     });
 
