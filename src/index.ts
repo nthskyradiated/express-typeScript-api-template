@@ -25,7 +25,7 @@ app.use(express.json())
 
 app.get<{}, MessageResponse>('/', (req , res: Response) => {
     res.json({
-        message: "API RootDir"
+        message: "Blue: API RootDir"
     }).end()
 })
 app.use(`${apiDirPath}`, routes)
