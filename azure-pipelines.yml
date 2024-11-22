@@ -32,7 +32,7 @@ steps:
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'  # Path to Dockerfile
     tags: |
-      blue
+      green
 
 # Logout
 - script: |
