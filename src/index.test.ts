@@ -29,7 +29,7 @@ describe('Express API', () => {
   it('should return a 200 OK for the root route', async () => {
     const response = await request(app).get('/');
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe('API RootDir');
+    expect(response.body.message).toBe('Green: API RootDir');
   });
 
   it('should return 404 for unknown routes', async () => {
