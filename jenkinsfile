@@ -1,6 +1,6 @@
     pipeline {
-        agent { label 'jenkins-agent-local' }
-        // agent any
+        // agent { label 'jenkins-agent-local' }
+        agent any
         environment {
         // Name configured in Jenkins -> Configure System -> SonarQube Servers
         SONARQUBE_SERVER = 'sonarqube-install'
@@ -19,19 +19,19 @@
                         sh 'pnpm run test --coverage'
                     }
                 }
-            }
-            stage('SonarQube Analysis') {
-                steps {
+                stage('SonarQube Analysis') {
+                 steps {
               withSonarQubeEnv(SONARQUBE_SERVER) {
                 script {
                         def scannerHome = tool 'SonarQube Scanner'
                         sh "${scannerHome}/bin/sonar-scanner " +
                             "-Dsonar.projectKey=${SONARQUBE_PROJECT_KEY} " +
-                            "-Dsonar.sources=. " +
-                            "-Dsonar.host.url=https://sonarcloud.io " +
-                            "-Dsonar.login=6d3b2b3f7f9d2f0f9d2f0f9d2f0f9d2f0f9d2f0f"
+                            "-Dsonar.sources=. "
+                            // "-Dsonar.host.url=${env.SONAR_HOST_URL} " +
+                            // "-Dsonar.login=${env.SONAR_AUTH_TOKEN}"
                     }
               }
+            }
             }
             }
                     stage('Quality Gate') {
