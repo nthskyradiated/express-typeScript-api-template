@@ -19,6 +19,7 @@
                         sh 'pnpm run test --coverage'
                     }
                 }
+            }
                 stage('SonarQube Analysis') {
                  steps {
               withSonarQubeEnv(SONARQUBE_SERVER) {
@@ -31,7 +32,6 @@
                             // "-Dsonar.login=${env.SONAR_AUTH_TOKEN}"
                     }
               }
-            }
             }
             }
                     stage('Quality Gate') {
