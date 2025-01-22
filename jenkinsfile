@@ -1,6 +1,12 @@
     pipeline {
         agent { label 'jenkins-agent-local' }
         // agent any
+        environment {
+        // Name configured in Jenkins -> Configure System -> SonarQube Servers
+        SONARQUBE_SERVER = 'sonarqube-install'
+        // Specify the project key as per your SonarQube project setup
+        SONARQUBE_PROJECT_KEY = 'pf-express-api1'
+    }
         stages {
             stage('Build and Test') {
                 steps {
@@ -10,10 +16,31 @@
                         sh 'npm install -g pnpm'
                         sh 'npm cache clean --force'
                         sh 'pnpm install --store=node_modules/.pnpm-store'
-                        sh 'pnpm run test'
+                        sh 'pnpm run test --coverage'
                     }
                 }
-            }   
+                 steps {
+              withSonarQubeEnv(SONARQUBE_SERVER) {
+                script {
+                        def scannerHome = tool 'SonarQube Scanner'
+                        sh "${scannerHome}/bin/sonar-scanner " +
+                            "-Dsonar.projectKey=${SONARQUBE_PROJECT_KEY} " +
+                            "-Dsonar.sources=. "
+                            // "-Dsonar.host.url=${env.SONAR_HOST_URL} " +
+                            // "-Dsonar.login=${env.SONAR_AUTH_TOKEN}"
+                    }
+              }
+            }
+            }
+                    stage('Quality Gate') {
+            steps {
+                script {
+                    timeout(time: 5, unit: 'MINUTES') {
+                        waitForQualityGate abortPipeline: true
+                    }
+                }
+            }
+        }
 
             stage('Push to DockerHub') {
                 tools { dockerTool 'DockerInstall'}
