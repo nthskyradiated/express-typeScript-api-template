@@ -24,7 +24,7 @@
                  steps {
               withSonarQubeEnv(SONARQUBE_SERVER) {
                 script {
-                        def scannerHome = tool 'SonarQube Scanner'
+                        def scannerHome = tool 'SonarQube'
                         sh "${scannerHome}/bin/sonar-scanner " +
                             "-Dsonar.projectKey=${SONARQUBE_PROJECT_KEY} " +
                             "-Dsonar.sources=. "
