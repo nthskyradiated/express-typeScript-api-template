@@ -1,6 +1,6 @@
     pipeline {
-        // agent { label 'jenkins-agent-local' }
-        agent any
+        agent { label 'jenkins-agent-local' }
+        // agent any
         environment {
         // Name configured in Jenkins -> Configure System -> SonarQube Servers
         SONARQUBE_SERVER = 'sonarqube-install'
@@ -59,12 +59,12 @@
                 }
             }
 
-            // stage('Trigger Deployment') {
-            //     steps {
-            //         echo 'triggering Argo-CD deployment...'
-            //         build job: 'Argo-CD-Deployment', parameters: [string(name: 'VERSION', value: "${BUILD_NUMBER}")]
-            //     }
-            // }
+            stage('Trigger Deployment') {
+                steps {
+                    echo 'triggering Argo-CD deployment...'
+                    build job: 'Argo-CD-Deployment', parameters: [string(name: 'VERSION', value: "${BUILD_NUMBER}")]
+                }
+            }
             stage('Done') {
                 steps {
                     echo 'Done!!!!'

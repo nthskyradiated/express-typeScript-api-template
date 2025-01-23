@@ -4,32 +4,32 @@ services:
     image: mongodb/mongodb-community-server:latest
     container_name: mongodb
     ports:
-      - "27017:27017"  # Expose MongoDB port
+      - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_ROOT_USERNAME: ${LOCAL_MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${LOCAL_MONGO_INITDB_ROOT_PASSWORD}
     networks:
       - express_api_network
     volumes:
-      - mongodb_data:/data/db  # Volume for persistent data
+      - mongodb_data:/data/db
 
   app:
     build:
-      context: .  # Directory containing the Dockerfile
-      dockerfile: dockerfile  # Specify the Dockerfile name if it's not the default
+      context: .
+      dockerfile: dockerfile
     container_name: express-ts-api
     ports:
-      - "8080:8080"  # Expose the app port
+      - "8080:8080"
     environment:
-      MONGO_URI: mongodb://admin:secret@mongodb:27017/collections?authSource=admin  # Connection URI
+      MONGO_URI: ${LOCAL_MONGO_URI}
     depends_on:
-      - mongodb  # Ensure MongoDB starts before the app
+      - mongodb
     networks:
       - express_api_network
 
 networks:
   express_api_network:
-    driver: bridge  # Create a bridge network
+    driver: bridge
 
 volumes:
   mongodb_data:
