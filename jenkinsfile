@@ -1,6 +1,6 @@
     pipeline {
-        agent { label 'jenkins-agent-local' }
-        // agent any
+        // agent { label 'jenkins-agent-local' }
+        agent any
         environment {
         // Name configured in Jenkins -> Configure System -> SonarQube Servers
         SONARQUBE_SERVER = 'sonarqube-install'
