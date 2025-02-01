@@ -30,6 +30,7 @@
                             "-Dsonar.sources=. "
                             // "-Dsonar.host.url=${env.SONAR_HOST_URL} " +
                             // "-Dsonar.login=${env.SONAR_AUTH_TOKEN}"
+                        sleep(secs: 30)
                     }
               }
             }
@@ -37,7 +38,7 @@
                     stage('Quality Gate') {
             steps {
                 script {
-                    sleep(secs: 60)
+                    sleep(secs: 30)
                     timeout(time: 5, unit: 'MINUTES') {
                         waitForQualityGate abortPipeline: true
                     }
