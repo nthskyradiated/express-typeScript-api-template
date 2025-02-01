@@ -51,6 +51,7 @@
                     withCredentials([usernamePassword(credentialsId: 'myDockerID', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh 'docker login -u "${USERNAME}" -p "${PASSWORD}" "https://registry-1.docker.io/v2/"'
                     sh 'docker build -t ${USERNAME}/${GITHUB_REPO_NAME}:v${BUILD_NUMBER} -f dockerfile .'
+                    sh 'docker login -u "${USERNAME}" -p "${PASSWORD}" "https://registry-1.docker.io/v2/"'
                     sh 'docker push ${USERNAME}/${GITHUB_REPO_NAME}:v${BUILD_NUMBER}'
                     echo 'Deployed! Proceeding to delete the built container...'
                     sh 'docker rmi ${USERNAME}/${GITHUB_REPO_NAME}:v${BUILD_NUMBER}'
